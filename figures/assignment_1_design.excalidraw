@@ -1,0 +1,169 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "title_1",
+      "type": "text",
+      "x": 300,
+      "y": 40,
+      "width": 400,
+      "height": 40,
+      "text": "第一次作业 - 温度数据采集与分析系统",
+      "fontSize": 24,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "box_1",
+      "type": "rectangle",
+      "x": 80,
+      "y": 120,
+      "width": 180,
+      "height": 80,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "text_box_1",
+      "type": "text",
+      "x": 85,
+      "y": 135,
+      "width": 170,
+      "height": 50,
+      "text": "TemperatureData\n\n- temperatures: double[]\n+ addTemp()\n+ getAllTemps()",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "box_2",
+      "type": "rectangle",
+      "x": 320,
+      "y": 120,
+      "width": 200,
+      "height": 100,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "text_box_2",
+      "type": "text",
+      "x": 325,
+      "y": 135,
+      "width": 190,
+      "height": 70,
+      "text": "TemperatureAnalyzer\n\n+ findMax()\n+ findMin()\n+ getAbnormalTemps()\n+ calculateMean()\n+ calculateVariance()",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "box_3",
+      "type": "rectangle",
+      "x": 580,
+      "y": 120,
+      "width": 140,
+      "height": 80,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffd43b",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "text_box_3",
+      "type": "text",
+      "x": 585,
+      "y": 135,
+      "width": 130,
+      "height": 50,
+      "text": "App\n\n+ main()\n+ getUserInput()",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "arrow_1",
+      "type": "arrow",
+      "x": 260,
+      "y": 160,
+      "width": 60,
+      "height": 0,
+      "points": [[0, 0], [60, 0]],
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "arrow_2",
+      "type": "arrow",
+      "x": 520,
+      "y": 160,
+      "width": 60,
+      "height": 0,
+      "points": [[0, 0], [60, 0]],
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "box_4",
+      "type": "rectangle",
+      "x": 140,
+      "y": 280,
+      "width": 600,
+      "height": 140,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "text_box_4",
+      "type": "text",
+      "x": 150,
+      "y": 295,
+      "width": 580,
+      "height": 110,
+      "text": "功能流程\n\n1. 用户输入温度数据 (例如: 25.1 24.8 26.3 5.2 27.2 32.5 24.5)\n2. 系统解析并存储到 TemperatureData\n3. TemperatureAnalyzer 分析数据:\n   - findMax() → 32.5℃ (高温故障)\n   - findMin() → 5.2℃ (传感器异常)\n   - getAbnormalTemps() → 返回 [5.2, 32.5]\n4. 打印结果到控制台",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "text_box_5",
+      "type": "text",
+      "x": 140,
+      "y": 440,
+      "width": 300,
+      "height": 30,
+      "text": "温度判定: 正常 20~30℃ | 异常低 <20℃ | 异常高 >30℃",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#e03131",
+      "backgroundColor": "transparent"
+    },
+    {
+      "id": "text_box_6",
+      "type": "text",
+      "x": 450,
+      "y": 440,
+      "width": 250,
+      "height": 30,
+      "text": "扩展: 对异常温度排序",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent"
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": 20
+  },
+  "files": {}
+}
