@@ -14,7 +14,12 @@ public class DataSourceFactory {
                 }
                 yield new FileDataSource(args[0]);
             }
-            case TYPE_KEYBOARD -> new KeyboardDataSource();
+            case TYPE_KEYBOARD -> {
+                if (args.length > 0) {
+                    yield new KeyboardDataSource(args[0]);
+                }
+                yield new KeyboardDataSource();
+            }
             default -> throw new IllegalArgumentException("未知的数据源类型: " + type);
         };
     }

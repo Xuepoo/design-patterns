@@ -7,16 +7,28 @@ import java.util.Scanner;
 
 public class KeyboardDataSource implements DataSource {
     private final Scanner scanner;
+    private final String[] inputData;
 
     public KeyboardDataSource() {
         this.scanner = new Scanner(System.in);
+        this.inputData = null;
+    }
+
+    public KeyboardDataSource(String inputData) {
+        this.scanner = null;
+        this.inputData = inputData.trim().split("\\s+");
     }
 
     @Override
     public List<Double> readData() {
-        System.out.print("请输入温度数据（空格分隔）: ");
-        String input = scanner.nextLine();
-        String[] parts = input.trim().split("\\s+");
+        String[] parts;
+        if (inputData != null) {
+            parts = inputData;
+        } else {
+            System.out.print("请输入温度数据（空格分隔）: ");
+            String input = scanner.nextLine();
+            parts = input.trim().split("\\s+");
+        }
 
         List<Double> temps = new ArrayList<>();
         for (String part : parts) {
