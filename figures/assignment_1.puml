@@ -1,0 +1,56 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package model {
+    class TemperatureData {
+        - temperatures: List<Double>
+        + addTemp(temp: double): void
+        + getAllTemps(): List<Double>
+        + isEmpty(): boolean
+        + size(): int
+    }
+}
+
+package strategy {
+    interface AnalysisStrategy {
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+        + getAbnormalTemps(data: TemperatureData): List<Double>
+    }
+
+    class BasicAnalysisStrategy {
+        - NORMAL_MIN: double = 20.0
+        - NORMAL_MAX: double = 30.0
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+        + getAbnormalTemps(data: TemperatureData): List<Double>
+    }
+
+    class AdvancedAnalysisStrategy {
+        - NORMAL_MIN: double = 20.0
+        - NORMAL_MAX: double = 30.0
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+        + getAbnormalTemps(data: TemperatureData): List<Double>
+        + calculateMean(data: TemperatureData): double
+        + calculateVariance(data: TemperatureData): double
+    }
+
+    AnalysisStrategy <|.. BasicAnalysisStrategy
+    AnalysisStrategy <|.. AdvancedAnalysisStrategy
+}
+
+package context {
+    class TemperatureAnalyzer {
+        - strategy: AnalysisStrategy
+        + TemperatureAnalyzer(strategy: AnalysisStrategy)
+        + setStrategy(strategy: AnalysisStrategy): void
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+        + getAbnormalTemps(data: TemperatureData): List<Double>
+    }
+}
+
+TemperatureAnalyzer o-- AnalysisStrategy
+
+@enduml
