@@ -6,11 +6,11 @@
 
 ## 技术栈
 
-| 工具     | 版本             |
-| -------- | ---------------- |
-| Java     | 21+              |
-| Gradle   | 9.x (Kotlin DSL) |
-| 测试框架 | JUnit Jupiter    |
+| 工具     | 版本               |
+| -------- | ------------------ |
+| Java     | 21+                |
+| Gradle   | 9.4.1 (Kotlin DSL) |
+| 测试框架 | JUnit Jupiter      |
 
 ---
 
