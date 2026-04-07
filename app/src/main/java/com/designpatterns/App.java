@@ -1,11 +1,13 @@
 package com.designpatterns;
 
-import com.designpatterns.context.TemperatureAnalyzer;
 import com.designpatterns.datasource.DataSource;
 import com.designpatterns.datasource.DataSourceFactory;
 import com.designpatterns.model.TemperatureData;
-import com.designpatterns.strategy.AdvancedAnalysisStrategy;
-import com.designpatterns.strategy.BasicAnalysisStrategy;
+import com.designpatterns.observer.AnalysisObserver;
+import com.designpatterns.observer.DataObserver;
+import com.designpatterns.observer.DataSubject;
+import com.designpatterns.observer.DisplayObserver;
+import com.designpatterns.observer.StorageObserver;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +16,9 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("========== 温度数据分析系统 ==========\n");
+        System.out.println("========== 温度数据采集与分析系统 ==========");
+        System.out.println("        (观察者模式 + 策略模式 + 工厂模式)\n");
+
         System.out.println("请选择数据来源：");
         System.out.println("1. 传感器数据（自动生成）");
         System.out.println("2. 文件数据");
@@ -52,30 +56,41 @@ public class App {
             return;
         }
 
+        System.out.println("\n========== 初始化观察者 ==========\n");
+
+        DataSubject subject = new DataSubject();
+
+        DataObserver displayObserver = new DisplayObserver();
+        DataObserver analysisObserver = new AnalysisObserver();
+        DataObserver storageObserver = new StorageObserver();
+
+        subject.attach(displayObserver);
+        subject.attach(analysisObserver);
+        subject.attach(storageObserver);
+
+        System.out.println("已注册 " + subject.getObserverCount() + " 个观察者");
+
+        System.out.println("\n========== 模拟数据变化（触发通知） ==========\n");
+
+        System.out.println("--- 场景1: 传感器数据到达 ---");
         TemperatureData data = new TemperatureData();
         for (double temp : temps) {
             data.addTemp(temp);
         }
+        subject.setData(data);
 
-        System.out.println("\n原始数据: " + temps);
-        System.out.println("\n========== 分析结果 ==========\n");
-
-        TemperatureAnalyzer analyzer = new TemperatureAnalyzer(new BasicAnalysisStrategy());
-
-        System.out.println("【基础分析】");
-        System.out.println("最高温度: " + analyzer.findMax(data) + "℃");
-        System.out.println("最低温度: " + analyzer.findMin(data) + "℃");
-        System.out.println("异常温度: " + analyzer.getAbnormalTemps(data));
-
-        analyzer.setStrategy(new AdvancedAnalysisStrategy());
-        AdvancedAnalysisStrategy advanced = new AdvancedAnalysisStrategy();
-
-        System.out.println("\n【高级分析】");
-        System.out.println("均值: " + String.format("%.2f", advanced.calculateMean(data)) + "℃");
-        System.out.println("方差: " + String.format("%.4f", advanced.calculateVariance(data)));
-        System.out.println("异常温度(排序): " + analyzer.getAbnormalTemps(data));
+        System.out.println("\n--- 场景2: 模拟异常数据更新 ---");
+        TemperatureData newData = new TemperatureData();
+        newData.addTemp(25.0);
+        newData.addTemp(28.5);
+        newData.addTemp(10.0);
+        newData.addTemp(35.0);
+        newData.addTemp(22.0);
+        subject.setData(newData);
 
         System.out.println("\n================================");
         System.out.println("温度判定: 正常 20~30℃ | 异常低 <20℃ | 异常高 >30℃");
+        System.out.println("================================");
+        System.out.println("设计模式: 工厂模式 + 策略模式 + 观察者模式");
     }
 }
