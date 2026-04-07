@@ -1,29 +1,64 @@
 package com.designpatterns;
 
 import com.designpatterns.context.TemperatureAnalyzer;
+import com.designpatterns.datasource.DataSource;
+import com.designpatterns.datasource.DataSourceFactory;
 import com.designpatterns.model.TemperatureData;
 import com.designpatterns.strategy.AdvancedAnalysisStrategy;
 import com.designpatterns.strategy.BasicAnalysisStrategy;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("请输入温度数据（空格分隔，例如：25.1 24.8 26.3 5.2 27.2 32.5 24.5）：");
+        System.out.println("========== 温度数据分析系统 ==========\n");
+        System.out.println("请选择数据来源：");
+        System.out.println("1. 传感器数据（自动生成）");
+        System.out.println("2. 文件数据");
+        System.out.println("3. 键盘输入");
         System.out.print("> ");
 
-        String input = scanner.nextLine();
-        String[] parts = input.trim().split("\\s+");
+        String choice = scanner.nextLine().trim();
+        DataSource dataSource;
 
-        TemperatureData data = new TemperatureData();
-        for (String s : parts) {
-            if (!s.isEmpty()) {
-                data.addTemp(Double.parseDouble(s));
+        switch (choice) {
+            case "1" -> {
+                dataSource = DataSourceFactory.createDataSource(DataSourceFactory.TYPE_SENSOR);
+                System.out.println("\n使用传感器数据源...");
+            }
+            case "2" -> {
+                System.out.print("请输入文件路径: ");
+                String filePath = scanner.nextLine().trim();
+                dataSource = DataSourceFactory.createDataSource(DataSourceFactory.TYPE_FILE, filePath);
+                System.out.println("\n使用文件数据源: " + filePath);
+            }
+            case "3" -> {
+                dataSource = DataSourceFactory.createDataSource(DataSourceFactory.TYPE_KEYBOARD);
+                System.out.println("\n使用键盘输入数据源...");
+            }
+            default -> {
+                System.out.println("无效选择，使用键盘输入...");
+                dataSource = DataSourceFactory.createDataSource(DataSourceFactory.TYPE_KEYBOARD);
             }
         }
 
-        System.out.println("\n========== 温度数据分析结果 ==========\n");
+        List<Double> temps = dataSource.readData();
+
+        if (temps.isEmpty()) {
+            System.out.println("没有获取到数据！");
+            return;
+        }
+
+        TemperatureData data = new TemperatureData();
+        for (double temp : temps) {
+            data.addTemp(temp);
+        }
+
+        System.out.println("\n原始数据: " + temps);
+        System.out.println("\n========== 分析结果 ==========\n");
 
         TemperatureAnalyzer analyzer = new TemperatureAnalyzer(new BasicAnalysisStrategy());
 
@@ -40,7 +75,7 @@ public class App {
         System.out.println("方差: " + String.format("%.4f", advanced.calculateVariance(data)));
         System.out.println("异常温度(排序): " + analyzer.getAbnormalTemps(data));
 
-        System.out.println("\n======================================");
+        System.out.println("\n================================");
         System.out.println("温度判定: 正常 20~30℃ | 异常低 <20℃ | 异常高 >30℃");
     }
 }
