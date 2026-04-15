@@ -14,6 +14,10 @@ public class TemperatureData {
         temperatures.add(temp);
     }
 
+    public void setAllTemps(List<Double> newTemperatures) {
+        this.temperatures = new ArrayList<>(newTemperatures);
+    }
+
     public List<Double> getAllTemps() {
         return new ArrayList<>(temperatures);
     }
