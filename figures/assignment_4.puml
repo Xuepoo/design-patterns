@@ -1,0 +1,97 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package model {
+    class TemperatureData {
+        - temperatures: List<Double>
+        + addTemp(temp: double): void
+        + setAllTemps(newTemperatures: List<Double>): void
+        + getAllTemps(): List<Double>
+        + isEmpty(): boolean
+        + size(): int
+    }
+}
+
+package processor {
+    interface AnomalyDetector {
+        + identifyAbnormal(data: TemperatureData): List<Double>
+    }
+    class DefaultAnomalyDetector {
+        + identifyAbnormal(data: TemperatureData): List<Double>
+    }
+    AnomalyDetector <|.. DefaultAnomalyDetector
+
+    interface StatisticalAnalyzer {
+        + calculateMean(data: TemperatureData): double
+        + calculateVariance(data: TemperatureData): double
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+    }
+    class DefaultStatisticalAnalyzer {
+        + calculateMean(data: TemperatureData): double
+        + calculateVariance(data: TemperatureData): double
+        + findMax(data: TemperatureData): double
+        + findMin(data: TemperatureData): double
+    }
+    StatisticalAnalyzer <|.. DefaultStatisticalAnalyzer
+
+    interface DataSorter {
+        + sortData(data: TemperatureData): List<Double>
+    }
+    class DefaultDataSorter {
+        + sortData(data: TemperatureData): List<Double>
+    }
+    DataSorter <|.. DefaultDataSorter
+
+    interface SensorCalibrator {
+        + calibrate(data: TemperatureData, offset: double): void
+    }
+    class DefaultSensorCalibrator {
+        + calibrate(data: TemperatureData, offset: double): void
+    }
+    SensorCalibrator <|.. DefaultSensorCalibrator
+}
+
+package notification {
+    interface NotificationService {
+        + notify(message: String): void
+    }
+    class EmailNotificationService {
+        + notify(message: String): void
+    }
+    class SMSNotificationService {
+        + notify(message: String): void
+    }
+    NotificationService <|.. EmailNotificationService
+    NotificationService <|.. SMSNotificationService
+}
+
+package observer {
+    interface DataObserver {
+        + update(data: TemperatureData): void
+    }
+
+    class DataSubject {
+        - observers: List<DataObserver>
+        - temperatureData: TemperatureData
+        + attach(observer: DataObserver): void
+        + detach(observer: DataObserver): void
+        + notifyObservers(): void
+        + setData(data: TemperatureData): void
+        + getData(): TemperatureData
+    }
+
+    class RemoteNotificationObserver {
+        - notificationService: NotificationService
+        - anomalyDetector: AnomalyDetector
+        + RemoteNotificationObserver(notificationService: NotificationService, anomalyDetector: AnomalyDetector)
+        + update(data: TemperatureData): void
+    }
+
+    DataSubject o-- DataObserver
+    DataObserver <|.. RemoteNotificationObserver
+    RemoteNotificationObserver --> NotificationService
+    RemoteNotificationObserver --> AnomalyDetector
+}
+
+@enduml
