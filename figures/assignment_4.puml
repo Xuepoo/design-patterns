@@ -79,6 +79,7 @@ package observer {
         + notifyObservers(): void
         + setData(data: TemperatureData): void
         + getData(): TemperatureData
+        + getObserverCount(): int
     }
 
     class RemoteNotificationObserver {
